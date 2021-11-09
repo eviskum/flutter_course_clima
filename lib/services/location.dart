@@ -4,7 +4,7 @@ class Location {
   double? latitude;
   double? longitude;
 
-  Future<Position> _determinePosition() async {
+  static Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -42,7 +42,7 @@ class Location {
 
   void getCurrentLocation() async {
     try {
-      Position position = await _determinePosition();
+      Position position = await determinePosition();
       latitude = position.latitude;
       longitude = position.longitude;
       print(position);
