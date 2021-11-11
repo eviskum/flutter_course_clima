@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_clima/models/weather_data.dart';
+import 'package:flutter_course_clima/screens/city_screen.dart';
 import 'package:flutter_course_clima/services/weather.dart';
 import 'package:flutter_course_clima/utilities/constants.dart';
 
@@ -29,9 +30,11 @@ class _LocationScreenState extends State<LocationScreen> {
     args = ModalRoute.of(context)!.settings.arguments as WeatherData;
   }
 
-  void updateWeather() async {
+  void updateWeather({String? cityName = null}) async {
+    WeatherData? updatedWeather;
+    if (cityName != null && cityName.isEmpty) return;
     print('We are updating the location and weather');
-    WeatherData? updatedWeather = await WeatherModel.getWeatherData();
+    updatedWeather = await WeatherModel.getWeatherData(cityName: cityName);
     if (updatedWeather != null) {
       setState(() {
         args = updatedWeather;
@@ -69,7 +72,13 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      // Navigator.of(context).pushNamed(CityScreen.routeName);
+                      // var returnVal = await Navigator.of(context).pushNamed(CityScreen.routeName);
+                      // String cityName = returnVal as String;
+                      String cityName = (await Navigator.of(context).pushNamed(CityScreen.routeName) as String);
+                      if (cityName.trim().isNotEmpty) updateWeather(cityName: cityName);
+                    },
                     child: Icon(
                       Icons.location_city,
                       size: 50.0,

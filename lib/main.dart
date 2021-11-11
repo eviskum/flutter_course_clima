@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_clima/screens/city_screen.dart';
 import 'package:flutter_course_clima/screens/loading_screen.dart';
 import 'package:flutter_course_clima/screens/location_screen.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoadingScreen(),
         LocationScreen.routeName: (context) => LocationScreen(),
+        CityScreen.routeName: (context) => CityScreen(),
       },
       // home: LoadingScreen(),
     );

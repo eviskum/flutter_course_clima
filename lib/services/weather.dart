@@ -39,15 +39,25 @@ class WeatherModel {
     }
   }
 
-  static Future<WeatherData?> getWeatherData() async {
+  static Future<WeatherData?> getWeatherData({String? cityName = null}) async {
     try {
-      Position _position = await Location.determinePosition();
-      Uri owUri = Uri.https('api.openweathermap.org', 'data/2.5/weather', {
-        'lat': _position.latitude.toString(),
-        'lon': _position.longitude.toString(),
-        'units': 'metric',
-        'appid': kWhetherApiKey,
-      });
+      Uri owUri;
+      if (cityName == null) {
+        Position _position = await Location.determinePosition();
+        owUri = Uri.https('api.openweathermap.org', 'data/2.5/weather', {
+          'lat': _position.latitude.toString(),
+          'lon': _position.longitude.toString(),
+          'units': 'metric',
+          'appid': kWhetherApiKey,
+        });
+      } else {
+        owUri = Uri.https('api.openweathermap.org', 'data/2.5/weather', {
+          'q': cityName,
+          'units': 'metric',
+          'appid': kWhetherApiKey,
+        });
+      }
+      print(owUri.toString());
       http.Response response = await http.get(owUri);
       if (response.statusCode == 200) {
         return WeatherData.fromJson(jsonDecode(response.body));
